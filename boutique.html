@@ -5,6 +5,64 @@
     <title>Boutique | OVERRUN</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- SYSTÈME DE STATUT DES SERVICES --- */
+        .service-status-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(140, 208, 217, 0.2);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            color: #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .status-item:hover {
+            border-color: #8cd0d9;
+            background: rgba(140, 208, 217, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Point clignotant */
+        .dot {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-orange {
+            background-color: #ffa500;
+            box-shadow: 0 0 10px #ffa500;
+            animation: blink 1.5s infinite;
+        }
+
+        .dot-green {
+            background-color: #2ecc71;
+            box-shadow: 0 0 10px #2ecc71;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
     <div class="bg-blurred"></div>
@@ -21,6 +79,18 @@
     </header>
 
     <div class="container">
+        
+        <div class="service-status-container">
+            <div class="status-item">
+                <span class="dot dot-orange"></span>
+                JEU : <strong>EN DÉVELOPPEMENT</strong>
+            </div>
+            <div class="status-item">
+                <span class="dot dot-green"></span>
+                BOUTIQUE : <strong>OPÉRATIONNELLE</strong>
+            </div>
+        </div>
+
         <h2 class="section-title">Boutique</h2>
         
         <div class="games-grid">
@@ -45,21 +115,20 @@
             </div>
         </div>
 
-        <div style="margin-top: 60px; padding: 30px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--glass-border); border-radius: 15px; text-align: center;">
+        <div style="margin-top: 60px; padding: 30px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; text-align: center;">
             <h3 style="color: #fff; margin-bottom: 10px;">🚀 BIENTÔT DISPONIBLE EN PRÉPARATION</h3>
-            <p style="color: var(--text-dim); margin-bottom: 20px;">Le jeu complet est actuellement en plein développement sous Unreal Engine 5.</p>
+            <p style="color: #aaa; margin-bottom: 20px;">Le jeu complet est actuellement en plein développement sous Unreal Engine 5.</p>
             
-            <p style="margin-bottom: 15px;">Si vous voulez suivre la progression :</p>
+            <p style="margin-bottom: 15px; color: #eee;">Si vous voulez suivre la progression :</p>
             
-            <a href="roadmap.html" class="btn-buy" style="background-color: #007bff; border: none; color: white; display: inline-block; max-width: 300px;">
+            <a href="roadmap.html" class="btn-buy" style="background-color: #007bff; border: none; color: white; display: inline-block; max-width: 300px; text-decoration: none;">
                 VOIR LA PROGRESSION
             </a>
         </div>
     </div>
 
-    <footer style="text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.8rem;">
+    <footer style="text-align: center; padding: 40px; color: #777; font-size: 0.8rem;">
         &copy; 2026 OVERRUN RPG - Développé par Ryan.
     </footer>
 </body>
-
 </html>
