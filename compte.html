@@ -2,19 +2,215 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil | OVERRUN</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        .admin-panel { background: rgba(255, 0, 0, 0.1); border: 2px solid #ff4d4d; padding: 20px; border-radius: 15px; margin-top: 30px; }
-        .user-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .btn-ban { background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        :root {
+            --accent: #8cd0d9;
+            --accent-glow: rgba(140, 208, 217, 0.4);
+            --bg-dark: #0a0b0d;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --error: #ff4d4d;
+            --success: #2ecc71;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .bg-blurred {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('fond-accueil.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            filter: blur(10px);
+            transform: scale(1.1);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 120px auto 50px;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-card {
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .section-subtitle {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn-main {
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 12px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-main:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px var(--accent-glow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(15px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: #111;
+            border: 1px solid var(--accent);
+            padding: 40px;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px; right: 20px;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Notifications style pro */
+        .status-msg {
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 10px;
+            display: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .error-msg { color: var(--error); background: rgba(255, 77, 77, 0.1); border-left: 4px solid var(--error); }
+        .success-msg { color: var(--success); background: rgba(46, 204, 113, 0.1); border-left: 4px solid var(--success); }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #888;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: white;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .input-group input:focus { border-color: var(--accent); }
+
+        .settings-container {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+            text-align: left;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .profile-avatar {
+            width: 80px; height: 80px;
+            background: var(--accent);
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; color: black;
+        }
     </style>
 </head>
 <body>
     <div class="bg-blurred"></div>
+
     <header>
-        <a href="index.html" class="brand"><img src="logo.png" alt="Logo"><span class="brand-text">OVERRUN</span></a>
+        <a href="index.html" class="brand">
+            <img src="logo.png" alt="Logo">
+            <span class="brand-text">OVERRUN</span>
+        </a>
         <nav>
             <a href="index.html">Accueil</a>
             <a href="boutique.html">Boutique</a>
@@ -26,123 +222,166 @@
     </header>
 
     <div class="container">
-        <div id="auth-ui">
+        <div id="auth-ui" class="auth-card">
+            <i class="fas fa-user-shield" style="font-size: 3rem; color: var(--accent); margin-bottom: 20px;"></i>
             <h2 class="section-title">Espace Membre</h2>
-            <div class="support-box" style="text-align: center;">
-                <div style="display: flex; gap: 20px; justify-content: center; margin-top: 25px;">
-                    <button class="btn-buy" onclick="openM('login-m')">CONNEXION</button>
-                    <button class="btn-buy" onclick="openM('reg-m')" style="background:transparent; border:1px solid var(--accent); color:var(--accent);">S'INSCRIRE</button>
-                </div>
+            <p class="section-subtitle">Connectez-vous pour accéder à votre profil</p>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <button class="btn-main" onclick="openM('login-m')">CONNEXION</button>
+                <button class="btn-main btn-outline" onclick="openM('reg-m')">S'INSCRIRE</button>
             </div>
         </div>
 
-        <div id="user-ui" style="display:none;">
-            <h2 class="section-title">Paramètres du Profil</h2>
-            <div class="support-box">
-                <h3 id="display-u">Pseudo</h3>
-                <p id="display-e" style="color: var(--text-dim);"></p>
-                <button onclick="logout()" class="btn-buy" style="background:#ff4d4d; margin-top:15px; max-width:150px;">DÉCONNEXION</button>
+        <div id="user-ui" style="display:none;" class="auth-card">
+            <div class="profile-header">
+                <div class="profile-avatar"><i class="fas fa-user"></i></div>
+                <div>
+                    <h2 id="display-u" style="margin:0; font-size: 2rem;">Pseudo</h2>
+                    <p id="display-e" style="margin:5px 0 0 0; color: #888;"></p>
+                </div>
             </div>
 
-            <div id="admin-section" class="admin-panel" style="display:none;">
-                <h3>🛡️ PANNEAU ADMINISTRATEUR</h3>
-                <p>Liste des comptes enregistrés sur ce navigateur :</p>
-                <div id="user-list" style="margin-top:20px;"></div>
+            <div class="settings-container">
+                <h3 style="color: var(--accent); margin-bottom: 25px;"><i class="fas fa-cog"></i> Paramètres</h3>
+                
+                <div id="status-msg" class="status-msg"></div>
+                
+                <div class="settings-grid">
+                    <div class="input-group">
+                        <label>Changer le Pseudo</label>
+                        <input type="text" id="set-u">
+                    </div>
+                    <div class="input-group">
+                        <label>Changer l'Email</label>
+                        <input type="email" id="set-e">
+                    </div>
+                    <div class="input-group">
+                        <label>Nouveau Mot de passe</label>
+                        <input type="password" id="set-p" placeholder="Laisser vide pour garder l'actuel">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button class="btn-main" onclick="updateAccount()">SAUVEGARDER</button>
+                    <button onclick="logout()" class="btn-main" style="background: var(--error); color: white;">DECONNEXION</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="login-m" class="modal"><div class="modal-content">
-        <span class="close-modal" onclick="closeM('login-m')">&times;</span>
-        <h3>Connexion</h3>
-        <div class="input-group"><label>Email</label><input type="email" id="l-e"></div>
-        <div class="input-group"><label>Mot de passe</label><input type="password" id="l-p"></div>
-        <button class="btn-buy" onclick="login()">ENTRER</button>
-    </div></div>
+    <div id="login-m" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeM('login-m')">&times;</span>
+            <h3 style="color: var(--accent);">CONNEXION</h3>
+            <div id="login-status" class="status-msg"></div>
+            <div class="input-group"><label>Email</label><input type="email" id="l-e"></div>
+            <div class="input-group"><label>Mot de passe</label><input type="password" id="l-p"></div>
+            <button class="btn-main" style="width: 100%; justify-content: center;" onclick="login()">Se connecter</button>
+        </div>
+    </div>
 
-    <div id="reg-m" class="modal"><div class="modal-content">
-        <span class="close-modal" onclick="closeM('reg-m')">&times;</span>
-        <h3>Inscription</h3>
-        <div class="input-group"><label>Pseudo</label><input type="text" id="r-u"></div>
-        <div class="input-group"><label>Email</label><input type="email" id="r-e"></div>
-        <div class="input-group"><label>Mot de passe (8+)</label><input type="password" id="r-p"></div>
-        <button class="btn-buy" onclick="register()">CRÉER</button>
-    </div></div>
+    <div id="reg-m" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeM('reg-m')">&times;</span>
+            <h3 style="color: var(--accent);">S'INSCRIRE</h3>
+            <div id="reg-status" class="status-msg"></div>
+            <div class="input-group"><label>Pseudo</label><input type="text" id="r-u"></div>
+            <div class="input-group"><label>Email (@gmail, @hotmail... + .com, .fr...)</label><input type="email" id="r-e"></div>
+            <div class="input-group"><label>Mot de passe</label><input type="password" id="r-p"></div>
+            <button class="btn-main" style="width: 100%; justify-content: center;" onclick="register()">Créer mon compte</button>
+        </div>
+    </div>
 
     <script>
-        function openM(id){ document.getElementById(id).style.display='flex'; }
-        function closeM(id){ document.getElementById(id).style.display='none'; }
+        const openM = (id) => document.getElementById(id).style.display='flex';
+        const closeM = (id) => document.getElementById(id).style.display='none';
+        
+        function notify(id, msg, type) {
+            const el = document.getElementById(id);
+            el.innerText = msg;
+            el.className = 'status-msg ' + (type === 'success' ? 'success-msg' : 'error-msg');
+            el.style.display = 'block';
+            if(type === 'success') setTimeout(() => location.reload(), 1200);
+        }
+
+        // --- Vérification Email Stricte ---
+        function isValidEmail(email) {
+            // Vérifie le format : texte + @ + texte + . + extension (2 lettres min)
+            const regex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+            return regex.test(email);
+        }
 
         function register() {
-            const u = document.getElementById('r-u').value, e = document.getElementById('r-e').value, p = document.getElementById('r-p').value;
-            if(p.length < 8) return alert("8 caractères min !");
+            const u = document.getElementById('r-u').value.trim(), e = document.getElementById('r-e').value.trim(), p = document.getElementById('r-p').value;
+            
+            if(u.length < 3) return notify('reg-status', "Pseudo trop court.", 'error');
+            if(!isValidEmail(e)) return notify('reg-status', "Format d'email invalide (ex: nom@domaine.com).", 'error');
+            if(p.length < 8) return notify('reg-status', "MDP trop court (8 min).", 'error');
+
             let users = JSON.parse(localStorage.getItem('users')) || [];
-            users.push({u, e, p, banned: false});
+            if(users.some(x => x.u.toLowerCase() === u.toLowerCase())) return notify('reg-status', "Pseudo déjà pris.", 'error');
+            if(users.some(x => x.e === e)) return notify('reg-status', "Email déjà utilisé.", 'error');
+
+            const newUser = {u, e, p, banned: false};
+            users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
-            alert("Compte sauvegardé !"); location.reload();
+            
+            // CONNEXION AUTOMATIQUE
+            localStorage.setItem('session', JSON.stringify(newUser));
+            notify('reg-status', "Compte créé ! Bienvenue.", 'success');
         }
 
         function login() {
-            const e = document.getElementById('l-e').value, p = document.getElementById('l-p').value;
+            const e = document.getElementById('l-e').value.trim(), p = document.getElementById('l-p').value;
             const users = JSON.parse(localStorage.getItem('users')) || [];
             const user = users.find(x => x.e === e && x.p === p);
             
-            if(user) {
-                if(user.banned) return alert("Ce compte est BANNI !");
-                localStorage.setItem('session', JSON.stringify(user)); 
-                location.reload();
-            } else { alert("Erreur identifiants"); }
+            if(!user) return notify('login-status', "Identifiants incorrects.", 'error');
+            localStorage.setItem('session', JSON.stringify(user)); 
+            notify('login-status', "Connexion réussie !", 'success');
+        }
+
+        function updateAccount() {
+            let users = JSON.parse(localStorage.getItem('users'));
+            let session = JSON.parse(localStorage.getItem('session'));
+            const idx = users.findIndex(x => x.e === session.e);
+            
+            const newU = document.getElementById('set-u').value.trim();
+            const newE = document.getElementById('set-e').value.trim();
+            const newP = document.getElementById('set-p').value;
+
+            if(newU && newU !== session.u) {
+                if(users.some(x => x.u.toLowerCase() === newU.toLowerCase())) return notify('status-msg', "Pseudo déjà pris.", 'error');
+                users[idx].u = newU; session.u = newU;
+            }
+            if(newE && newE !== session.e) {
+                if(!isValidEmail(newE)) return notify('status-msg', "Format email invalide.", 'error');
+                if(users.some(x => x.e === newE)) return notify('status-msg', "Email déjà utilisé.", 'error');
+                users[idx].e = newE; session.e = newE;
+            }
+            if(newP) {
+                if(newP.length < 8) return notify('status-msg', "8 caractères min pour le MDP.", 'error');
+                users[idx].p = newP; session.p = newP;
+            }
+
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('session', JSON.stringify(session));
+            notify('status-msg', "Modifications enregistrées !", 'success');
         }
 
         function logout(){ localStorage.removeItem('session'); location.reload(); }
-
-        function deleteUser(email) {
-            let users = JSON.parse(localStorage.getItem('users'));
-            users = users.filter(x => x.e !== email);
-            localStorage.setItem('users', JSON.stringify(users));
-            renderAdmin();
-        }
-
-        function banUser(email) {
-            let users = JSON.parse(localStorage.getItem('users'));
-            const idx = users.findIndex(x => x.e === email);
-            users[idx].banned = !users[idx].banned;
-            localStorage.setItem('users', JSON.stringify(users));
-            renderAdmin();
-        }
-
-        function renderAdmin() {
-            const list = document.getElementById('user-list');
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            list.innerHTML = "";
-            users.forEach(u => {
-                if(u.e === 'admin@overrun.com') return;
-                list.innerHTML += `
-                    <div class="user-list-item">
-                        <span>${u.u} (${u.e}) ${u.banned ? '🔴' : '🟢'}</span>
-                        <div>
-                            <button class="btn-ban" onclick="banUser('${u.e}')">${u.banned ? 'Débannir' : 'Bannir'}</button>
-                            <button class="btn-ban" style="background:gray;" onclick="deleteUser('${u.e}')">Supprimer</button>
-                        </div>
-                    </div>`;
-            });
-        }
 
         window.onload = () => {
             const s = JSON.parse(localStorage.getItem('session'));
             if(s) {
                 document.getElementById('auth-ui').style.display='none';
                 document.getElementById('user-ui').style.display='block';
-                document.getElementById('display-u').innerText = "Bienvenue, " + s.u;
+                document.getElementById('display-u').innerText = s.u;
                 document.getElementById('display-e').innerText = s.e;
-                
-                if(s.e === 'admin@overrun.com') {
-                    document.getElementById('admin-section').style.display = 'block';
-                    renderAdmin();
-                }
+                document.getElementById('set-u').value = s.u;
+                document.getElementById('set-e').value = s.e;
             }
         };
     </script>
 </body>
-
 </html>
