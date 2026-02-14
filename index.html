@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>OVERRUN | Officiel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- STYLES EXISTANTS --- */
+        .btn-turquoise {
+            display: inline-block;
+            background-color: #8cd0d9;
+            color: #000;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-weight: 900;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-turquoise:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(140, 208, 217, 0.5);
+            background-color: #fff;
+        }
+
+        .img-container {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .img-container:hover {
+            border-color: #8cd0d9;
+            transform: translateY(-5px);
+        }
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .bg-blurred {
+            transition: transform 0.1s ease-out;
+            pointer-events: none;
+        }
+
+        .donation-card {
+            background: rgba(140, 208, 217, 0.05); 
+            border: 1px solid #8cd0d9; 
+            padding: 40px; 
+            border-radius: 25px; 
+            max-width: 700px; 
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+            transition: 0.4s;
+        }
+
+        /* --- STYLES DU POP-UP --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10000;
+            visibility: hidden; opacity: 0;
+            transition: 0.4s;
+            cursor: pointer; /* Indique qu'on peut cliquer pour fermer */
+        }
+        .modal-overlay.active { visibility: visible; opacity: 1; }
+
+        .modal-content {
+            background: #111;
+            border: 2px solid #8cd0d9;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            position: relative; /* Pour placer la croix par rapport au carré */
+            box-shadow: 0 0 50px rgba(140, 208, 217, 0.3);
+            transform: translateY(-30px);
+            transition: 0.5s;
+            cursor: default; /* Remet le curseur normal sur le contenu */
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        /* LA CROIX ROUGE */
+        .btn-close-red {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: #ff4444;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+            transition: 0.3s;
+        }
+        .btn-close-red:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: #ff0000;
+        }
+
+        .social-btn {
+            display: flex; align-items: center; justify-content: center;
+            gap: 15px; padding: 15px; margin: 12px 0;
+            border-radius: 12px; text-decoration: none;
+            font-weight: bold; font-size: 1rem; transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .btn-yt { background: #ff0000; color: white; }
+        .btn-ds { background: #5865F2; color: white; }
+        .btn-dn { background: #8cd0d9; color: black; }
+        
+        .social-btn:hover { transform: scale(1.03); filter: brightness(1.2); }
+    </style>
+</head>
+<body>
+
+    <div class="modal-overlay" id="welcomeModal" onclick="closePopup()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="btn-close-red" onclick="closePopup()">
+                <i class="fas fa-times"></i>
+            </div>
+            
+            <h2 style="color: #fff; margin-bottom: 10px; letter-spacing: 2px;">REJOINS L'AVENTURE</h2>
+            <p style="color: #8cd0d9; margin-bottom: 25px; font-size: 0.9rem;">Suis le projet de Ryan sur tous les réseaux !</p>
+            
+            <a href="https://youtube.com/@ryang-force?si=qOozt6OVZR-btFya" target="_blank" class="social-btn btn-yt">
+                <i class="fab fa-youtube"></i> Ma Chaîne Youtube
+            </a>
+
+            <a href="https://discord.gg/MxCnDspx9F" target="_blank" class="social-btn btn-ds">
+                <i class="fab fa-discord"></i> Serveur Discord
+            </a>
+
+            <a href="https://www.onparticipe.fr/c/5rxJ1liu" target="_blank" class="social-btn btn-dn">
+                <i class="fas fa-heart"></i> Faire un don (Cagnotte)
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-blurred"></div>
+    <header>
+        <a href="index.html" class="brand"><img src="logo.png" alt="Logo"><span class="brand-text">OVERRUN</span></a>
+        <nav>
+            <a href="index.html" class="active">Accueil</a>
+            <a href="boutique.html">Boutique</a>
+            <a href="informations.html">Informations</a>
+            <a href="discussion.html">Discussion</a> 
+            <a href="support.html">Support</a>
+        </nav>
+        <a href="compte.html" class="btn-account">Mon Compte</a>
+    </header>
+
+    <main class="container" style="text-align: center; margin-top: 50px;">
+        <h1 style="font-size: 4rem; margin-bottom: 10px; text-shadow: 0 0 20px rgba(140, 208, 217, 0.3);">OVERRUN RPG</h1>
+        <p style="color: #8cd0d9; margin-bottom: 40px; letter-spacing: 3px; font-weight: bold; text-transform: uppercase;">Production Indépendante par Ryan</p>
+
+        <div style="width: 100%; max-width: 900px; margin: 0 auto 40px auto; border-radius: 20px; overflow: hidden; border: 2px solid #8cd0d9; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+            <video autoplay muted loop playsinline style="width: 100%; display: block;">
+                <source src="ton-trailer.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div style="margin-bottom: 60px;">
+            <a href="boutique.html" class="btn-turquoise"><i class="fas fa-shopping-cart"></i> ACCÉDER À LA BOUTIQUE</a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin: 0 auto;">
+            <div class="img-container">
+                <img src="image1.jpg" alt="Capture Combat">
+            </div>
+            <div class="img-container">
+                <img src="image2.jpg" alt="Capture Village">
+            </div>
+        </div>
+
+        <div style="margin-top: 100px; padding-bottom: 80px;">
+            <div class="donation-card">
+                <h3 style="color: #fff; margin-bottom: 15px; font-size: 1.8rem;">💎 SOUTENIR LE DÉVELOPPEMENT</h3>
+                <p style="color: #bbb; margin-bottom: 30px; line-height: 1.8; font-size: 1.1rem;">
+                    Chaque don permet de financer les serveurs et d'améliorer les graphismes sous <strong>Unreal Engine 5</strong>. Soutenez l'aventure de Ryan !
+                </p>
+                <a href="https://www.onparticipe.fr/c/5rxJ1liu" target="_blank" class="btn-turquoise">
+                    <i class="fas fa-heart"></i> FAIRE UN DON À RYAN
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <footer style="text-align: center; padding: 40px; color: #444; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05);">
+        &copy; 2026 OVERRUN RPG | Un projet de Ryan. Tout droit réservé.
+    </footer>
+
+    <script>
+        document.addEventListener("mousemove", function(e) {
+            const bg = document.querySelector(".bg-blurred");
+            if (bg) {
+                const moveX = (window.innerWidth / 2 - e.pageX) / 45;
+                const moveY = (window.innerHeight / 2 - e.pageY) / 45;
+                bg.style.transform = `scale(1.1) translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('welcomeModal').classList.add('active');
+            }, 800);
+        };
+
+        function closePopup() {
+            document.getElementById('welcomeModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

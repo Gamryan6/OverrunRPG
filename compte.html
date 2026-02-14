@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Profil | OVERRUN</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-panel { background: rgba(255, 0, 0, 0.1); border: 2px solid #ff4d4d; padding: 20px; border-radius: 15px; margin-top: 30px; }
+        .user-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .btn-ban { background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="bg-blurred"></div>
+    <header>
+        <a href="index.html" class="brand"><img src="logo.png" alt="Logo"><span class="brand-text">OVERRUN</span></a>
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="boutique.html">Boutique</a>
+            <a href="informations.html">Informations</a>
+            <a href="discussion.html">Discussion</a>
+            <a href="support.html">Support</a>
+        </nav>
+        <a href="compte.html" class="btn-account active">Mon Compte</a>
+    </header>
+
+    <div class="container">
+        <div id="auth-ui">
+            <h2 class="section-title">Espace Membre</h2>
+            <div class="support-box" style="text-align: center;">
+                <div style="display: flex; gap: 20px; justify-content: center; margin-top: 25px;">
+                    <button class="btn-buy" onclick="openM('login-m')">CONNEXION</button>
+                    <button class="btn-buy" onclick="openM('reg-m')" style="background:transparent; border:1px solid var(--accent); color:var(--accent);">S'INSCRIRE</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="user-ui" style="display:none;">
+            <h2 class="section-title">Paramètres du Profil</h2>
+            <div class="support-box">
+                <h3 id="display-u">Pseudo</h3>
+                <p id="display-e" style="color: var(--text-dim);"></p>
+                <button onclick="logout()" class="btn-buy" style="background:#ff4d4d; margin-top:15px; max-width:150px;">DÉCONNEXION</button>
+            </div>
+
+            <div id="admin-section" class="admin-panel" style="display:none;">
+                <h3>🛡️ PANNEAU ADMINISTRATEUR</h3>
+                <p>Liste des comptes enregistrés sur ce navigateur :</p>
+                <div id="user-list" style="margin-top:20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-m" class="modal"><div class="modal-content">
+        <span class="close-modal" onclick="closeM('login-m')">&times;</span>
+        <h3>Connexion</h3>
+        <div class="input-group"><label>Email</label><input type="email" id="l-e"></div>
+        <div class="input-group"><label>Mot de passe</label><input type="password" id="l-p"></div>
+        <button class="btn-buy" onclick="login()">ENTRER</button>
+    </div></div>
+
+    <div id="reg-m" class="modal"><div class="modal-content">
+        <span class="close-modal" onclick="closeM('reg-m')">&times;</span>
+        <h3>Inscription</h3>
+        <div class="input-group"><label>Pseudo</label><input type="text" id="r-u"></div>
+        <div class="input-group"><label>Email</label><input type="email" id="r-e"></div>
+        <div class="input-group"><label>Mot de passe (8+)</label><input type="password" id="r-p"></div>
+        <button class="btn-buy" onclick="register()">CRÉER</button>
+    </div></div>
+
+    <script>
+        function openM(id){ document.getElementById(id).style.display='flex'; }
+        function closeM(id){ document.getElementById(id).style.display='none'; }
+
+        function register() {
+            const u = document.getElementById('r-u').value, e = document.getElementById('r-e').value, p = document.getElementById('r-p').value;
+            if(p.length < 8) return alert("8 caractères min !");
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            users.push({u, e, p, banned: false});
+            localStorage.setItem('users', JSON.stringify(users));
+            alert("Compte sauvegardé !"); location.reload();
+        }
+
+        function login() {
+            const e = document.getElementById('l-e').value, p = document.getElementById('l-p').value;
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(x => x.e === e && x.p === p);
+            
+            if(user) {
+                if(user.banned) return alert("Ce compte est BANNI !");
+                localStorage.setItem('session', JSON.stringify(user)); 
+                location.reload();
+            } else { alert("Erreur identifiants"); }
+        }
+
+        function logout(){ localStorage.removeItem('session'); location.reload(); }
+
+        function deleteUser(email) {
+            let users = JSON.parse(localStorage.getItem('users'));
+            users = users.filter(x => x.e !== email);
+            localStorage.setItem('users', JSON.stringify(users));
+            renderAdmin();
+        }
+
+        function banUser(email) {
+            let users = JSON.parse(localStorage.getItem('users'));
+            const idx = users.findIndex(x => x.e === email);
+            users[idx].banned = !users[idx].banned;
+            localStorage.setItem('users', JSON.stringify(users));
+            renderAdmin();
+        }
+
+        function renderAdmin() {
+            const list = document.getElementById('user-list');
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            list.innerHTML = "";
+            users.forEach(u => {
+                if(u.e === 'admin@overrun.com') return;
+                list.innerHTML += `
+                    <div class="user-list-item">
+                        <span>${u.u} (${u.e}) ${u.banned ? '🔴' : '🟢'}</span>
+                        <div>
+                            <button class="btn-ban" onclick="banUser('${u.e}')">${u.banned ? 'Débannir' : 'Bannir'}</button>
+                            <button class="btn-ban" style="background:gray;" onclick="deleteUser('${u.e}')">Supprimer</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        window.onload = () => {
+            const s = JSON.parse(localStorage.getItem('session'));
+            if(s) {
+                document.getElementById('auth-ui').style.display='none';
+                document.getElementById('user-ui').style.display='block';
+                document.getElementById('display-u').innerText = "Bienvenue, " + s.u;
+                document.getElementById('display-e').innerText = s.e;
+                
+                if(s.e === 'admin@overrun.com') {
+                    document.getElementById('admin-section').style.display = 'block';
+                    renderAdmin();
+                }
+            }
+        };
+    </script>
+</body>
+</html>

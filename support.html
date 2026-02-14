@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Support | OVERRUN RPG</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Animation pour le point vert qui clignote */
+        @keyframes pulse-green {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .status-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            animation: pulse-green 2s infinite;
+        }
+        /* Style pour le menu déroulant */
+        select {
+            width: 100%; padding: 12px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3); color: white;
+            outline: none; cursor: pointer;
+        }
+        select option { background: #111; color: white; }
+
+        /* Effet spécial pour le bouton Discord */
+        .btn-discord {
+            display: block;
+            background: #5865F2; 
+            color: white; 
+            border: none; 
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-discord:hover {
+            background: #4752c4;
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blurred"></div>
+
+    <header>
+        <a href="index.html" class="brand">
+            <img src="logo.png" alt="Logo">
+            <span class="brand-text">OVERRUN</span>
+        </a>
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="boutique.html">Boutique</a>
+            <a href="informations.html">Informations</a> 
+            <a href="discussion.html">Discussion</a> 
+            <a href="support.html" class="active">Support</a>
+        </nav>
+        <a href="compte.html" class="btn-account">Mon Compte</a>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">Centre d'Assistance</h2>
+
+        <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 40px;">
+            <div style="background: rgba(0, 255, 0, 0.05); border: 1px solid #00ff00; padding: 10px 20px; border-radius: 50px; display: flex; align-items: center; gap: 10px;">
+                <div class="status-dot" style="background: #00ff00; box-shadow: 0 0 8px #00ff00;"></div>
+                <span style="font-size: 0.8rem; color: #00ff00; font-weight: bold; letter-spacing: 1px;">SERVEURS : ONLINE</span>
+            </div>
+            <div style="background: rgba(140, 208, 217, 0.05); border: 1px solid #8cd0d9; padding: 10px 20px; border-radius: 50px; display: flex; align-items: center; gap: 10px;">
+                <div style="width: 10px; height: 10px; background: #8cd0d9; border-radius: 50%;"></div>
+                <span style="font-size: 0.8rem; color: #8cd0d9; font-weight: bold; letter-spacing: 1px;">SITE WEB : OK</span>
+            </div>
+        </div>
+
+        <div class="support-container">
+            
+            <div class="support-box" style="border-color: #5865F2; background: rgba(88, 101, 242, 0.05);">
+                <h3 style="color: #5865F2;"><i class="fab fa-discord"></i> DISCORD COMMUNAUTAIRE</h3>
+                <p style="margin: 15px 0; color: var(--text-dim);">
+                    Une question rapide ? Envie de discuter avec Ryan le développeur ? Rejoins-nous sur Discord pour un support en direct.
+                </p>
+                <a href="https://discord.gg/MxCnDspx9F" target="_blank" class="btn-discord">
+                    REJOINDRE LE SERVEUR
+                </a>
+            </div>
+
+            <div class="support-box">
+                <h3><i class="fas fa-envelope"></i> CONTACTER RYAN</h3>
+                <p style="margin-bottom: 20px; color: var(--text-dim);">
+                    Utilise ce formulaire pour m'envoyer un mail. Je te répondrai dès que possible !
+                </p>
+                
+                <form action="https://formspree.io/f/xreapjdl" method="POST">
+                    <div class="input-group">
+                        <label>Ton adresse Email</label>
+                        <input type="email" name="email" placeholder="exemple@mail.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Type de demande</label>
+                        <select name="type_demande" required>
+                            <option value="bug">🪲 Signaler un Bug (UE5)</option>
+                            <option value="don">💎 Question sur les Dons</option>
+                            <option value="compte">👤 Problème de Compte</option>
+                            <option value="suggestion">💡 Suggestion pour le jeu</option>
+                            <option value="autre">📝 Autre demande</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Sujet précis</label>
+                        <input type="text" name="subject" placeholder="Bug, Question, Suggestion..." required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Ton Message</label>
+                        <textarea name="message" rows="5" placeholder="Salut Ryan, j'ai un souci avec..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-buy" style="background: #8cd0d9; color: black; border: none; font-weight: bold;">
+                        ENVOYER L'EMAIL
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.8rem;">
+        &copy; 2026 OVERRUN RPG - Développé par Ryan. Tous droits réservés.
+    </footer>
+
+</body>
+</html>

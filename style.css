@@ -1,0 +1,158 @@
+/* --- POLICE ET VARIABLES --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+:root {
+    --bg: #050505;
+    --accent: #7ebbc4;
+    --accent-glow: rgba(126, 187, 196, 0.3);
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text: #ffffff;
+    --text-dim: #a0a0a0;
+    --error: #ff4d4d;
+}
+
+/* --- RESET & BASE --- */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+html, body { 
+    height: 100%; 
+    width: 100%; 
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* --- FOND D'ÉCRAN FLOU (Boutique, Support, Compte) --- */
+.bg-blurred {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('fond-accueil.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(12px);
+    z-index: -1;
+    transform: scale(1.1);
+}
+
+/* --- HEADER / NAVIGATION --- */
+header {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
+    padding: 15px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky; top: 0; z-index: 1000;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand img { height: 45px; filter: drop-shadow(0 0 8px var(--accent)); }
+.brand-text { font-weight: 900; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
+
+nav a { color: var(--text-dim); text-decoration: none; margin: 0 15px; font-weight: 600; transition: 0.3s; font-size: 14px; }
+nav a:hover, nav a.active { color: var(--accent); }
+
+.btn-account {
+    border: 1px solid var(--accent); color: var(--accent);
+    padding: 8px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; transition: 0.3s;
+}
+.btn-account:hover { background: var(--accent); color: #000; }
+
+/* --- ACCUEIL (HERO SECTION) --- */
+.hero-home { 
+    flex: 1;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    background: linear-gradient(rgba(0,0,0,0.3), var(--bg)), url('fond-accueil.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 40px;
+}
+
+.hero-home h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 900; margin-bottom: 20px; line-height: 0.9; }
+.hero-home p { font-size: 1.2rem; color: var(--text-dim); max-width: 700px; margin-bottom: 35px; }
+
+/* --- BOUTIQUE & CONTENEURS --- */
+.container { padding: 80px 8%; flex: 1; }
+.section-title { font-size: 2.8rem; margin-bottom: 50px; border-left: 6px solid var(--accent); padding-left: 20px; text-transform: uppercase; }
+
+.games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+.game-card {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px;
+    overflow: hidden; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
+    backdrop-filter: blur(5px);
+}
+.game-card:hover { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
+.game-img { width: 100%; height: 240px; object-fit: cover; }
+.card-body { padding: 30px; }
+.price { display: block; font-size: 1.6rem; font-weight: 800; color: var(--accent); margin: 15px 0; }
+
+/* --- BOUTONS --- */
+.btn-buy {
+    width: 100%; padding: 16px; background: var(--accent); border: none; border-radius: 14px;
+    color: #000; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s;
+    text-decoration: none; display: block; text-align: center;
+}
+.btn-buy:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+.card-badge {
+    position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.8); 
+    padding: 6px 15px; border-radius: 30px; font-size: 10px; font-weight: bold; border: 1px solid var(--accent);
+}
+
+/* --- SUPPORT & COMPTE --- */
+.support-container { display: flex; gap: 30px; flex-wrap: wrap; }
+.support-box {
+    flex: 1; min-width: 320px; background: var(--glass); padding: 40px; 
+    border-radius: 24px; border: 1px solid var(--glass-border); backdrop-filter: blur(15px);
+}
+
+.input-group { margin-bottom: 25px; }
+.input-group label { display: block; margin-bottom: 10px; color: var(--text-dim); font-size: 0.9rem; font-weight: 600; }
+.input-group input, .input-group textarea {
+    width: 100%; padding: 16px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border);
+    border-radius: 12px; color: white; outline: none; font-family: inherit; font-size: 1rem;
+}
+.input-group input:focus { border-color: var(--accent); }
+
+/* --- MODALES --- */
+.modal {
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; z-index: 2000;
+    justify-content: center; align-items: center;
+    background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background: #0d1117; padding: 45px; border-radius: 28px;
+    border: 1px solid var(--glass-border); width: 90%; max-width: 420px;
+    position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px);
+}
+
+.close-modal {
+    position: absolute; top: 20px; right: 25px;
+    cursor: pointer; color: var(--text-dim); font-size: 28px;
+}
+
+.auth-error {
+    color: var(--error); background: rgba(255, 77, 77, 0.1);
+    padding: 10px; border-radius: 8px; margin-bottom: 20px;
+    font-size: 0.85rem; text-align: center; display: none;
+}

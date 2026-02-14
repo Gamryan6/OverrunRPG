@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Discussion | OVERRUN</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* On force le container à prendre toute la largeur */
+        .container-full {
+            width: 98%; /* Presque toute la largeur pour laisser une petite marge esthétique */
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px); /* Calcule la hauteur restante sous le menu */
+        }
+
+        .chat-wrapper {
+            background: #000; 
+            border: 2px solid #8cd0d9; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: 0 0 30px rgba(140, 208, 217, 0.2);
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Remplit le container */
+        }
+
+        .chat-header {
+            background: #111; 
+            padding: 15px 25px; 
+            border-bottom: 1px solid rgba(140, 208, 217, 0.3); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+
+        /* L'iframe s'étire maintenant sur tout le reste de la place */
+        iframe {
+            flex-grow: 1; 
+            border: none;
+            width: 100%;
+        }
+
+        .status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #00ff00;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 10px #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blurred"></div>
+    <header>
+        <a href="index.html" class="brand"><img src="logo.png" alt="Logo"><span class="brand-text">OVERRUN</span></a>
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="boutique.html">Boutique</a>
+            <a href="informations.html">Informations</a>
+            <a href="discussion.html" class="active">Discussion</a> 
+            <a href="support.html">Support</a>
+        </nav>
+        <a href="compte.html" class="btn-account">Mon Compte</a>
+    </header>
+
+    <div class="container-full">
+        
+        <div class="chat-wrapper">
+            <div class="chat-header">
+                <span style="font-weight: bold; color: #fff; letter-spacing: 1px;">
+                    <i class="fas fa-comments" style="color: #8cd0d9; margin-right: 10px;"></i> SALON GÉNÉRAL
+                </span>
+                <span style="font-size: 0.8rem; color: #00ff00; font-weight: bold;">
+                    <span class="status-dot"></span> SERVEUR OPÉRATIONNEL
+                </span>
+            </div>
+            
+            <iframe src="https://www5.cbox.ws/box/?boxid=961267&boxtag=SsRLT1" 
+                    allowtransparency="yes" 
+                    allow="autoplay" 
+                    scrolling="auto">
+            </iframe>
+        </div>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="index.html" style="color: #8cd0d9; text-decoration: none; font-size: 0.9rem; opacity: 0.7;">
+                <i class="fas fa-arrow-left"></i> RETOUR AU CAMPEMENT
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
